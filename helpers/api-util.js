@@ -8,7 +8,7 @@ export async function getAllEvents() {
   for (const key in data) {
     events.push({
       id: key,
-      ...data[key],
+      ...data[key]
     });
   }
 
@@ -17,5 +17,6 @@ export async function getAllEvents() {
 
 export async function getFeaturedEvents() {
   const allEvents = await getAllEvents();
-  allEvents.filter((event) => event.isFeatered);
+  console.log("dd", allEvents)
+  return allEvents.filter((event) => event.isFeatered);
 }
