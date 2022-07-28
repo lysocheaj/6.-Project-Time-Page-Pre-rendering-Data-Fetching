@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { getFilteredEvents } from "../../dummy-data";
+// import { getFilteredEvents } from "../../dummy-data";
+import { getFilteredEvents } from "../../helpers/api-util";
 import EventList from "../../components/events/event-list";
 import ResultsTitle from "../../components/events/results-title";
 import { Fragment } from "react";
@@ -16,8 +17,8 @@ function FilteredEventsPage() {
   const filteredYear = filteredData[0];
   const filteredMonth = filteredData[1];
 
-  const numYear = +filteredYear;
-  const numMonth = +filteredMonth;
+  const numYear = filteredYear;
+  const numMonth = filteredMonth;
 
   if (
     isNaN(numYear) ||
@@ -65,6 +66,12 @@ function FilteredEventsPage() {
       <EventList items={filteredEvents} />
     </Fragment>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {events: [...slug]}
+  }
 }
 
 export default FilteredEventsPage;
