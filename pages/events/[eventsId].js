@@ -1,4 +1,8 @@
-import { getEventById, getAllEvents } from "../../helpers/api-util";
+import {
+  getEventById,
+  getAllEvents,
+  getFeaturedEvents,
+} from "../../helpers/api-util";
 import { Fragment } from "react";
 import EventSummary from "../../components/event-detail/event-summary";
 import EventLogistics from "../../components/event-detail/event-logistics";
@@ -8,12 +12,10 @@ import ErrorAlert from "../../components/ui/error-alert";
 function EventDetailPage(props) {
   const event = props.events;
 
-  console.log("event: ", event);
-
   if (!event) {
     return (
-      <ErrorAlert className="center">
-        <p>Loading...</p>
+      <ErrorAlert>
+        <p>Loading....</p>
       </ErrorAlert>
     );
   }
@@ -41,12 +43,20 @@ export async function getStaticProps(constext) {
   const event = await getEventById(eventId);
   return {
     props: { events: event },
+    revalidate: 30,
   };
 }
 
 export async function getStaticPaths() {
-  const events = await getAllEvents();
-  const paths = events.map((event) => ({ params: { eventsId: event.id } }));
+  try {
+    var even = await getFeaturedEvents();
+
+    var paths = even.map((event) => ({ params: { eventsId: event.id } }));
+    console.log("path", JSON.stringify(paths));
+  } catch (error) {
+    error.message;
+  }
+
   return {
     paths: paths,
     fallback: true,
